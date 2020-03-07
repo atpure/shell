@@ -6,4 +6,3 @@ navi2
 
 Not Active Process
 navi3
-imsi1

@@ -1,0 +1,10 @@
+[
+  {
+    "name": "HRI",
+    "result": "PASS"
+  },
+  {
+    "name": "NAVI",
+    "result": "FAIL"
+  }
+]

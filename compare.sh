@@ -8,32 +8,36 @@ hri2
 NAVI_P="
 navi1
 navi2
+navi3
 "
+RESULT_HRI="PASS"
+RESULT_NAVI="PASS"
 
 AP=$(cat log.txt | grep -Pzo "(?s)(?<=Active Process).*?(?=Not Active Process)" | awk 'NF')
 NAP=$(cat log.txt | awk 'f; /Not Active Process/ {f=1}')
 
-
-echo -e "\nChecking"
-
-for check_hri in ${HRI_P}
-do
-    for process in $AP
+for process in $NAP
+do	
+    for check_hri in $HRI_P
     do
         if [ "$process" == "$check_hri" ]; then
-            echo $process
+            RESULT_HRI="FAIL"
         fi
     done
-done
-
-for check_navi in ${NAVI_P}
-do
-    for process in $AP
+ 
+    for check_navi in $NAVI_P
     do
         if [ "$process" == "$check_navi" ]; then
-            echo $process
+            RESULT_NAVI="FAIL"
         fi
     done
 done
 
+jq -n \
+    --arg hri $RESULT_HRI\
+    --arg navi $RESULT_NAVI\
+    '
+    [(.name="HRI" | .result=$hri),
+    (.name="NAVI" | .result=$navi)]
+    ' > ex.json
 
